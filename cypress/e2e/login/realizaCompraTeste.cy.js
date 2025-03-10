@@ -25,7 +25,7 @@ it('Realiza login, valida itens no carrinho, preenche checkout, finaliza compra 
 
   // Acessando o carrinho
   cy.get('#shopping_cart_container').click()
- cy
+
   // Verificando os itens no carrinho
   cy.get('.cart_item').should('have.length', 3)
 
@@ -40,8 +40,8 @@ it('Realiza login, valida itens no carrinho, preenche checkout, finaliza compra 
   cy.get('.checkout_button').click()
 
   // Validando a página de informações de checkout
-  //cy.url().should('include', '/checkout-step-one')
-  //cy.get('.checkout_header').should('be.visible').and('contain.text', 'Checkout: Your Information')
+  cy.url().should('include', '/checkout-step-one')
+  cy.get('.subheader').should('be.visible').and('contain.text', 'Checkout: Your Information')
 
   // Preenchendo os campos de checkout
   cy.get('[data-test="firstName"]').type('Felipe').should('have.value', 'Felipe') // Validando o campo First Name
