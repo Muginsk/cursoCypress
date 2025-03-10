@@ -40,3 +40,53 @@ Este repositório contém o código de automação de testes utilizando **Cypres
 
 A estrutura do projeto segue o padrão do Cypress, com a organização dos testes dentro de `cypress/integration` e relatórios gerados em `cypress/reports`:
 
+├── cypress/ │ ├── fixtures/ │ ├── integration/ # Testes Cypress │ ├── plugins/ │ ├── support/ │ └── reports/ │ └── html/ │ └── index.html # Relatório HTML gerado │ └── junit/ │ └── test-output.xml # Relatório JUnit └── package.json └── cypress.config.js
+
+
+## Configuração do Cypress
+
+O arquivo `cypress.config.js` foi configurado para usar o **Cypress Mocha Reporter** e o **Cypress Multi Reporters**. Aqui está a configuração relevante:
+
+```javascript
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+      // Usando o Cypress Mochawesome Reporter
+      const mochawesome = require('cypress-mochawesome-reporter/plugin')
+      mochawesome(on)
+
+      // Usando o Cypress Multi Reporters
+      const multiReports = require('cypress-multi-reporters')
+      config.reporter = 'cypress-multi-reporters'
+      config.reporterOptions = {
+        reporterEnabled: 'mocha-junit-reporter, mochawesome',
+        mochaJunitReporterReporterOptions: {
+          mochaFile: 'cypress/reports/junit/test-output.xml',
+        },
+        mochawesomeReporterOptions: {
+          reportDir: 'cypress/reports/html',
+          overwrite: true,
+          html: true,
+          json: true,
+        },
+      }
+
+      return config
+    },
+  },
+})
+Gerando Relatórios
+Após a execução dos testes, dois tipos de relatórios são gerados:
+
+Relatório HTML
+Onde é gerado: O relatório HTML será gerado dentro da pasta cypress/reports/html/ com o nome de index.html.
+Como visualizar: Navegue até a pasta cypress/reports/html/ e abra o arquivo index.html em qualquer navegador.
+Relatório JUnit
+Onde é gerado: O relatório JUnit será gerado em cypress/reports/junit/test-output.xml.
+Rodando os Testes
+Para rodar os testes e gerar os relatórios, utilize o seguinte comando:
+npx cypress run
+
+
